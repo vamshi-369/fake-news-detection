@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction History - Fake News Detection System{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    <div>
+        <h1 style="font-family: var(--font-heading); font-size: 2rem; font-weight: 700;">Prediction History</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Review all past news articles and headlines verified by your account.</p>
+    </div>
+
+    {% if predictions %}
+        <form action="{{ url_for('clear_history') }}" method="POST" onsubmit="return confirm('Are you sure you want to clear your entire prediction history?');">
+            <button type="submit" class="btn-secondary" style="color: var(--fake-color); border-color: rgba(244,63,94,0.3);">
+                <i class="fa-solid fa-trash-can"></i> Clear History
+            </button>
+        </form>
+    {% endif %}
+</div>
+
+<!-- Stats Overview Grid -->
+<div class="history-stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon total">
+            <i class="fa-solid fa-calculator" style="font-size: 1.3rem;"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-num">{{ total_count }}</div>
+            <div class="stat-lbl">Total Verified</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon real">
+            <i class="fa-solid fa-circle-check" style="font-size: 1.3rem;"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-num" style="color: var(--real-color);">{{ real_count }}</div>
+            <div class="stat-lbl">Real Articles</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon fake">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.3rem;"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-num" style="color: var(--fake-color);">{{ fake_count }}</div>
+            <div class="stat-lbl">Fake Articles</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(6,182,212,0.15); color: var(--accent-cyan);">
+            <i class="fa-solid fa-chart-line" style="font-size: 1.3rem;"></i>
+        </div>
+        <div class="stat-info">
+            <div class="stat-num" style="color: var(--accent-cyan);">{{ avg_confidence }}%</div>
+            <div class="stat-lbl">Avg Confidence</div>
+        </div>
+    </div>
+</div>
+
+<!-- Search & Filter Controls -->
+{% if predictions %}
+    <div style="margin-bottom: 1.5rem;">
+        <input type="text" 
+               id="history-search" 
+               class="form-control" 
+               placeholder="🔍 Search past predictions by keywords or classification..." 
+               style="max-width: 400px;">
+    </div>
+{% endif %}
+
+<!-- History Items List -->
+<div id="full-history-list" class="history-list">
+    {% if predictions %}
+        {% for item in predictions %}
+            <div class="history-item" id="history-row-{{ item.id }}">
+                <div class="history-item-body">
+                    <div class="history-item-text">
+                        "{{ item.input_text }}"
+                    </div>
+                    <div class="history-item-meta">
+                        <span><i class="fa-regular fa-clock"></i> {{ item.timestamp.strftime("%b %d, %Y %I:%M %p") }}</span>
+                        <span>Confidence: <strong>{{ (item.confidence * 100)|round(1) }}%</strong></span>
+                        <span>Prob: <strong>{{ item.probability }}</strong></span>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <span class="badge {{ 'fake' if item.label == 'Fake' else 'real' }}">{{ item.label }}</span>
+                    <button onclick="deleteHistoryItem({{ item.id }})" 
+                            style="background:none; border:none; color: var(--text-dim); cursor:pointer; font-size:1rem; padding: 0.2rem 0.5rem;"
+                            title="Delete entry">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="glass-card" style="text-align: center; color: var(--text-dim); padding: 3rem;">
+            <i class="fa-solid fa-box-open" style="font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+            <h3>No Prediction History Found</h3>
+            <p style="margin-top: 0.5rem;">Articles you analyze will be stored securely here.</p>
+            <a href="{{ url_for('home') }}" class="btn-primary" style="margin-top: 1.5rem;">
+                Go to Detector
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('history-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', () => {
+            const filter = searchInput.value.toLowerCase();
+            const items = document.querySelectorAll('#full-history-list .history-item');
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    }
+});
+</script>
+{% endblock %}

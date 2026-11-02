@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Detector Workspace - Fake News Detection System{% endblock %}
+
+{% block content %}
+<div class="hero-header">
+    <h1 class="hero-title">Fake News Detection System</h1>
+    <p class="hero-subtitle">Instantly analyze news headlines or full article text using a Bidirectional LSTM Deep Learning network.</p>
+</div>
+
+<div class="detector-grid">
+    <!-- Left Column: Input Form Card -->
+    <div class="glass-card">
+        <h2 style="font-family: var(--font-heading); font-size: 1.35rem; margin-bottom: 1rem; display:flex; align-items:center; gap:0.5rem;">
+            <i class="fa-solid fa-file-pen" style="color: var(--accent-primary);"></i> Submit News Text
+        </h2>
+
+        <!-- Sample Headline Quick-Fills -->
+        <div class="preset-container">
+            <span class="preset-title">Preset Samples:</span>
+            <button class="preset-btn" data-sample="sample1">✨ Real: James Webb</button>
+            <button class="preset-btn" data-sample="sample2">✨ Real: Federal Reserve</button>
+            <button class="preset-btn" data-sample="sample3">⚠️ Fake: Weather Machine</button>
+            <button class="preset-btn" data-sample="sample4">⚠️ Fake: Miracle Ocean Water</button>
+        </div>
+
+        <form id="news-form">
+            <div class="form-group" style="margin-bottom: 0.5rem;">
+                <textarea id="news-text-input" 
+                          class="form-control" 
+                          placeholder="Paste a news article body or headline text here to evaluate credibility..." 
+                          required></textarea>
+                <div class="textarea-footer">
+                    <span id="word-counter">0 words</span>
+                    <span id="char-counter">0 chars</span>
+                </div>
+            </div>
+
+            <button type="submit" id="btn-analyze" class="btn-primary" style="width: 100%; margin-top: 1rem;">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Check News Credibility
+            </button>
+        </form>
+    </div>
+
+    <!-- Right Column: Result Card Container -->
+    <div class="glass-card result-card-container">
+        <!-- Initial Placeholder State -->
+        <div id="result-placeholder" class="result-placeholder">
+            <div class="icon-wrapper">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 style="font-family: var(--font-heading); font-size: 1.2rem; color: var(--text-main); margin-bottom: 0.4rem;">
+                Awaiting News Input
+            </h3>
+            <p>Paste text on the left and click <strong>Check News Credibility</strong> to generate instant LSTM neural predictions.</p>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-spinner" class="loading-spinner">
+            <div class="spinner"></div>
+            <p style="color: var(--text-muted); font-weight: 500;">Running Bidirectional LSTM Inference...</p>
+        </div>
+
+        <!-- Prediction Result State -->
+        <div id="result-box" class="result-box">
+            <div style="text-align: center;">
+                <span id="status-badge" class="status-badge real">
+                    ✅ REAL NEWS
+                </span>
+            </div>
+
+            <!-- Confidence Bar -->
+            <div class="confidence-section">
+                <div class="confidence-header">
+                    <span class="confidence-label">Model Confidence</span>
+                    <span id="confidence-val" class="confidence-value" style="color: var(--real-color);">--%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="progress-bar-fill" class="progress-bar-fill real"></div>
+                </div>
+            </div>
+
+            <!-- Detailed Metrics Grid -->
+            <div class="metrics-summary">
+                <div class="metric-item">
+                    <div class="metric-lbl">Model Output Prob</div>
+                    <div id="probability-val" class="metric-val">--</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-lbl">Tokens Analyzed</div>
+                    <div id="word-count-val" class="metric-val">--</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; font-size: 0.8rem; color: var(--text-dim);">
+                Verified at <span id="prediction-time">Just now</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard Section: Recent Checks -->
+<div style="margin-top: 3rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-family: var(--font-heading); font-size: 1.4rem;">
+            <i class="fa-solid fa-list-check" style="color: var(--accent-cyan);"></i> Your Recent Checks
+        </h3>
+        <a href="{{ url_for('history') }}" class="btn-secondary" style="font-size: 0.8rem;">
+            View All History <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <div id="recent-checks-list" class="history-list">
+        {% if recent_checks %}
+            {% for item in recent_checks %}
+                <div class="history-item">
+                    <div class="history-item-body">
+                        <div class="history-item-text">
+                            "{{ item.input_text[:120] }}{% if item.input_text|length > 120 %}...{% endif %}"
+                        </div>
+                        <div class="history-item-meta">
+                            <span>{{ item.timestamp.strftime("%b %d, %Y %I:%M %p") }}</span>
+                            <span>Confidence: <strong>{{ (item.confidence * 100)|round(1) }}%</strong></span>
+                        </div>
+                    </div>
+                    <span class="badge {{ 'fake' if item.label == 'Fake' else 'real' }}">{{ item.label }}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="glass-card" style="text-align: center; color: var(--text-dim); padding: 2rem;">
+                No news check history yet. Analyze your first article above!
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account - Fake News Detection System{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="glass-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Create Account</h1>
+            <p class="auth-subtitle">Register to verify news articles with deep learning</p>
+        </div>
+
+        <form action="{{ url_for('signup') }}" method="POST" id="signup-form">
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" 
+                       id="username" 
+                       name="username" 
+                       class="form-control" 
+                       placeholder="e.g. news_analyst" 
+                       value="{{ username or '' }}" 
+                       required 
+                       autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" 
+                       id="email" 
+                       name="email" 
+                       class="form-control" 
+                       placeholder="e.g. analyst@example.com" 
+                       value="{{ email or '' }}" 
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" 
+                       id="password" 
+                       name="password" 
+                       class="form-control" 
+                       placeholder="At least 6 characters" 
+                       minlength="6" 
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password" class="form-label">Confirm Password</label>
+                <input type="password" 
+                       id="confirm_password" 
+                       name="confirm_password" 
+                       class="form-control" 
+                       placeholder="Re-enter password" 
+                       required>
+                <div id="password-mismatch-msg" style="color: var(--fake-color); font-size: 0.8rem; margin-top: 0.4rem; display: none;">
+                    Passwords do not match!
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;" id="btn-signup">
+                <i class="fa-solid fa-user-plus"></i> Register
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Already have an account? <a href="{{ url_for('login') }}">Sign In</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const signupForm = document.getElementById('signup-form');
+    const pwd = document.getElementById('password');
+    const confirmPwd = document.getElementById('confirm_password');
+    const msg = document.getElementById('password-mismatch-msg');
+
+    signupForm.addEventListener('submit', (e) => {
+        if (pwd.value !== confirmPwd.value) {
+            e.preventDefault();
+            msg.style.display = 'block';
+        } else {
+            msg.style.display = 'none';
+        }
+    });
+
+    confirmPwd.addEventListener('input', () => {
+        if (pwd.value && confirmPwd.value && pwd.value !== confirmPwd.value) {
+            msg.style.display = 'block';
+        } else {
+            msg.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Flask (app/app.py)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/app/app.py",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "FLASK_APP": "app/app.py",
+                "FLASK_ENV": "development"
+            },
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Train LSTM Model",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/model_training/train_lstm.py",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        }
+    ]
+}

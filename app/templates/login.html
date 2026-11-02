@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In - Fake News Detection System{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="glass-card">
+        <div class="auth-header">
+            <h1 class="auth-title">Welcome Back</h1>
+            <p class="auth-subtitle">Sign in to access your neural fake news detector</p>
+        </div>
+
+        <form action="{{ url_for('login') }}" method="POST">
+            <div class="form-group">
+                <label for="login_field" class="form-label">Username or Email</label>
+                <input type="text" 
+                       id="login_field" 
+                       name="login_field" 
+                       class="form-control" 
+                       placeholder="Enter your username or email" 
+                       value="{{ login_field or '' }}" 
+                       required 
+                       autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" 
+                       id="password" 
+                       name="password" 
+                       class="form-control" 
+                       placeholder="Enter your password" 
+                       required>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">
+                <i class="fa-solid fa-right-to-bracket"></i> Sign In
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Don't have an account yet? <a href="{{ url_for('signup') }}">Create Account</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

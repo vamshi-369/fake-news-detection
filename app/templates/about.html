@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}About & Data Provenance - Fake News Detection System{% endblock %}
+
+{% block content %}
+<div class="hero-header">
+    <h1 class="hero-title">About the Detection System</h1>
+    <p class="hero-subtitle">Learn about our deep learning model architecture, NLP preprocessing pipeline, and dataset collection sources.</p>
+</div>
+
+<!-- Data Collection Sources Card -->
+<div class="glass-card" style="margin-bottom: 2rem;">
+    <h2 style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--accent-cyan); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem;">
+        <i class="fa-solid fa-database"></i> Data Collection Sources & Dataset Provenance
+    </h2>
+
+    <p style="line-height: 1.7; color: var(--text-muted); margin-bottom: 1.5rem;">
+        The training data powering our neural network classification engine is collected and curated from established public NLP datasets and professional fact-checking organizations:
+    </p>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+        <div style="background: rgba(10, 14, 24, 0.6); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-glass);">
+            <h3 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 0.5rem; display:flex; align-items:center; gap:0.5rem;">
+                <i class="fa-solid fa-newspaper" style="color: var(--accent-primary);"></i> Kaggle Fake & Real News Dataset
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                Comprises over 44,000 news articles. Verified <strong>Real News</strong> is collected directly from official news wire services (such as <em>Reuters</em>), while <strong>Fake News</strong> articles are gathered from flagged misinformation portals and satirical sites across political, world news, and health domains.
+            </p>
+        </div>
+
+        <div style="background: rgba(10, 14, 24, 0.6); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-glass);">
+            <h3 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 0.5rem; display:flex; align-items:center; gap:0.5rem;">
+                <i class="fa-solid fa-check-double" style="color: var(--real-color);"></i> PolitiFact & LIAR Dataset
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                Includes 12,800 human-annotated short statements and political headlines manually evaluated by professional journalists at <em>PolitiFact.com</em>, categorized across strict truthfulness metrics.
+            </p>
+        </div>
+
+        <div style="background: rgba(10, 14, 24, 0.6); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-glass);">
+            <h3 style="font-size: 1.15rem; color: var(--text-main); margin-bottom: 0.5rem; display:flex; align-items:center; gap:0.5rem;">
+                <i class="fa-solid fa-filter" style="color: var(--accent-secondary);"></i> Cleaned NLP Corpus
+            </h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                Cleaned dataset spanning science, health, technology, finance, and global breaking news. Each article text undergoes automated lowercasing, HTML tag stripping, regex URL cleaning, and custom vocabulary tokenization.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Model Architecture Explanation -->
+<div class="glass-card" style="margin-bottom: 2rem;">
+    <h2 style="font-family: var(--font-heading); font-size: 1.6rem; color: var(--accent-primary); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem;">
+        <i class="fa-solid fa-brain"></i> Bidirectional LSTM Neural Architecture
+    </h2>
+
+    <p style="line-height: 1.7; color: var(--text-muted); margin-bottom: 1.5rem;">
+        Unlike simple keyword matching models, a <strong>Bidirectional Long Short-Term Memory (Bi-LSTM)</strong> neural network processes text in both forward and backward directions simultaneously. This allows the system to capture complex context, sensationalist phrasing, and syntactic patterns.
+    </p>
+
+    <div style="background: rgba(10, 14, 24, 0.7); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-glass); font-family: monospace; font-size: 0.9rem; line-height: 1.8; color: var(--accent-cyan); overflow-x: auto;">
+        Raw Article Input ➔ Text Preprocessor ➔ Tokenizer Sequence (max_len=300)<br>
+        &nbsp;&nbsp;└──► Embedding Layer (vocab_size=5000, dim=128)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└──► Bi-LSTM Layer 1 (64 hidden units x 2) + Dropout(0.3)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└──► Bi-LSTM Layer 2 (32 hidden units x 2) + Dropout(0.3)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└──► Global Average Pooling ➔ Dense(64, ReLU) ➔ Dense(1, Sigmoid)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└──► Probability Output: [0.0 = REAL | 1.0 = FAKE]
+    </div>
+</div>
+
+<!-- Responsible AI & Disclaimer -->
+<div class="glass-card">
+    <h2 style="font-family: var(--font-heading); font-size: 1.4rem; color: var(--fake-color); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem;">
+        <i class="fa-solid fa-shield-cat"></i> Responsible AI & Limitations Disclaimer
+    </h2>
+
+    <ul style="line-height: 1.8; color: var(--text-muted); padding-left: 1.25rem;">
+        <li><strong>Confidence Ratings</strong>: The percentage shown reflects the probability assigned by the deep learning classifier based on learned textual patterns.</li>
+        <li><strong>Domain Adaptation</strong>: Machine learning models trained on political and news domain datasets may exhibit lower precision when evaluating niche technical jargon or satirical comedy content.</li>
+        <li><strong>Verification Guidance</strong>: This system is an AI assist tool and should always be paired with primary source verification and professional fact-checking organizations.</li>
+    </ul>
+</div>
+{% endblock %}

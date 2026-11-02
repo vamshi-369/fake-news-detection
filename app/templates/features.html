@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}System Features - Fake News Detection System{% endblock %}
+
+{% block content %}
+<div class="hero-header">
+    <h1 class="hero-title">System Features & Capabilities</h1>
+    <p class="hero-subtitle">Explore the technical capabilities, architecture benefits, and user features built into our detection system.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.75rem;">
+    <!-- Feature Card 1 -->
+    <div class="glass-card">
+        <div style="width: 52px; height: 52px; background: rgba(99, 102, 241, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--accent-primary); font-size: 1.5rem; margin-bottom: 1.25rem; border: 1px solid rgba(99, 102, 241, 0.3);">
+            <i class="fa-solid fa-brain"></i>
+        </div>
+        <h3 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 0.6rem;">Bidirectional LSTM Network</h3>
+        <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+            Uses dual-direction recurrent neural layers (`nn.LSTM`) to process text forward and backward, capturing subtle contextual dependencies and sensationalist phrasing.
+        </p>
+    </div>
+
+    <!-- Feature Card 2 -->
+    <div class="glass-card">
+        <div style="width: 52px; height: 52px; background: rgba(16, 185, 129, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--real-color); font-size: 1.5rem; margin-bottom: 1.25rem; border: 1px solid rgba(16, 185, 129, 0.3);">
+            <i class="fa-solid fa-bolt"></i>
+        </div>
+        <h3 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 0.6rem;">Real-Time AJAX Inference</h3>
+        <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+            Submits news article text via asynchronous Fetch API calls to return prediction results instantly without requiring full browser page reloads.
+        </p>
+    </div>
+
+    <!-- Feature Card 3 -->
+    <div class="glass-card">
+        <div style="width: 52px; height: 52px; background: rgba(6, 182, 212, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); font-size: 1.5rem; margin-bottom: 1.25rem; border: 1px solid rgba(6, 182, 212, 0.3);">
+            <i class="fa-solid fa-chart-pie"></i>
+        </div>
+        <h3 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 0.6rem;">Dynamic Confidence Gauge</h3>
+        <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+            Displays an animated visual confidence meter with glowing color indicators (emerald green for Real news, rose red for Fake news) alongside token count analytics.
+        </p>
+    </div>
+
+    <!-- Feature Card 4 -->
+    <div class="glass-card">
+        <div style="width: 52px; height: 52px; background: rgba(168, 85, 247, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--accent-secondary); font-size: 1.5rem; margin-bottom: 1.25rem; border: 1px solid rgba(168, 85, 247, 0.3);">
+            <i class="fa-solid fa-user-shield"></i>
+        </div>
+        <h3 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 0.6rem;">User Authentication</h3>
+        <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+            Protected login and registration system powered by `Flask-Login` and `werkzeug.security` password hashing (`pbkdf2:sha256`) to ensure user data privacy.
+        </p>
+    </div>
+
+    <!-- Feature Card 5 -->
+    <div class="glass-card">
+        <div style="width: 52px; height: 52px; background: rgba(245, 158, 11, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: #f59e0b; font-size: 1.5rem; margin-bottom: 1.25rem; border: 1px solid rgba(245, 158, 11, 0.3);">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <h3 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 0.6rem;">Prediction History & Logs</h3>
+        <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+            Saves all past predictions into an SQLite database (`database.db`) with date filtering, average confidence metrics, and individual deletion controls.
+        </p>
+    </div>
+
+    <!-- Feature Card 6 -->
+    <div class="glass-card">
+        <div style="width: 52px; height: 52px; background: rgba(244, 63, 94, 0.15); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--fake-color); font-size: 1.5rem; margin-bottom: 1.25rem; border: 1px solid rgba(244, 63, 94, 0.3);">
+            <i class="fa-solid fa-wand-magic"></i>
+        </div>
+        <h3 style="font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 0.6rem;">Preset Sample Headlines</h3>
+        <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+            Includes one-click preset buttons for real science/financial articles and fake conspiracy news to allow instant system testing without manual typing.
+        </p>
+    </div>
+</div>
+{% endblock %}

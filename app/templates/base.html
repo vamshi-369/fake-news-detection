@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Fake News Detection System (LSTM Deep Learning){% endblock %}</title>
+    <meta name="description" content="AI-powered fake news detection web application built with Bidirectional LSTM Neural Networks and Flask.">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Glassmorphism CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+    <!-- Sticky Glass Navigation Bar -->
+    <nav class="navbar">
+        <div class="app-container nav-content">
+            <a href="{{ url_for('home') if current_user.is_authenticated else url_for('login') }}" class="brand-logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <span>Fake News <span style="color: var(--accent-primary);">Detection System</span></span>
+            </a>
+
+            <ul class="nav-links">
+                {% if current_user.is_authenticated %}
+                    <li>
+                        <a href="{{ url_for('home') }}" class="nav-link {% if request.endpoint == 'home' %}active{% endif %}">
+                            <i class="fa-solid fa-magnifying-glass"></i> Detector
+                        </a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="{{ url_for('features') }}" class="nav-link {% if request.endpoint == 'features' %}active{% endif %}">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Features
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">
+                        <i class="fa-solid fa-circle-info"></i> About & Data
+                    </a>
+                </li>
+                {% if current_user.is_authenticated %}
+                    <li>
+                        <a href="{{ url_for('history') }}" class="nav-link {% if request.endpoint == 'history' %}active{% endif %}">
+                            <i class="fa-solid fa-clock-rotate-left"></i> History
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            {% if current_user.is_authenticated %}
+                <div class="nav-user">
+                    <span class="user-badge">
+                        <i class="fa-solid fa-circle-user"></i> {{ current_user.username }}
+                    </span>
+                    <a href="{{ url_for('logout') }}" class="btn-logout" title="Sign Out">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </a>
+                </div>
+            {% else %}
+                <div style="display: flex; gap: 1rem;">
+                    <a href="{{ url_for('login') }}" class="btn-secondary">Log In</a>
+                    <a href="{{ url_for('signup') }}" class="btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.9rem;">Sign Up</a>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="main-content">
+        <div class="app-container">
+            <!-- Flash Notification Banners -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            <span><i class="fa-solid fa-circle-info"></i> {{ message }}</span>
+                            <button onclick="this.parentElement.remove()" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1.1rem;">&times;</button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="app-container">
+            <p>Fake News Detection System &copy; 2026 | Powered by Bidirectional LSTM Deep Learning (PyTorch) & Flask</p>
+        </div>
+    </footer>
+
+    <!-- Main JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
