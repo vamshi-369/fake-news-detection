@@ -47,6 +47,10 @@ def create_app():
             return redirect(url_for('home'))
         return redirect(url_for('login'))
 
+    @app.route('/healthz')
+    def healthz():
+        return jsonify({'status': 'ok'})
+
     @app.route('/signup', methods=['GET', 'POST'])
     def signup():
         if current_user.is_authenticated:
@@ -239,4 +243,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)

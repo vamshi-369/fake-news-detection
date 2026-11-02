@@ -135,6 +135,19 @@ python app/app.py
 
 Use a securely generated secret for deployed environments; do not commit it to the repository.
 
+## ☁️ Deploy to Render
+
+The repository includes a Render Blueprint in `render.yaml`. To publish the running app:
+
+1. Sign in at [Render](https://dashboard.render.com/) and connect the GitHub account that owns this repository.
+2. Select **New** → **Blueprint** and choose `vamshi-369/fake-news-detection`.
+3. Review the `fake-news-detection` web service and select **Apply**. Render installs the web-only dependencies, generates a private `SECRET_KEY`, and deploys the Flask backend.
+4. Open the `onrender.com` URL shown on the service page. The `/healthz` endpoint is used for deployment health checks.
+
+The deployed service loads the checked-in `models/model.pkl` classifier; PyTorch is only needed for training and is intentionally omitted from the web runtime to reduce deployment size.
+
+**Free-tier limitations:** Render may spin down an idle service, so the first visit after inactivity can take about a minute while the backend starts. The app's SQLite database is on ephemeral storage in this setup; accounts and prediction history can be lost when the service restarts or redeploys. Use persistent storage or a managed database before relying on it for durable user data.
+
 ---
 
 ## 💻 Running in Visual Studio Code (VS Code)
